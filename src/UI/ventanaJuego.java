@@ -14,6 +14,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextPane;
+import java.awt.Font;
+import java.awt.Color;
 
 public class ventanaJuego {
 
@@ -23,7 +25,8 @@ public class ventanaJuego {
 	private static int tamañoTablero;
 	private int movimientos;
 	private JTextPane tpPuntaje;
-	
+	private JTextPane tpMensaje;
+	private JButton btnArriba, btnAbajo, btnIzquierda, btnDerecha;
 
 	/**
 	 * Launch the application.
@@ -49,6 +52,8 @@ public class ventanaJuego {
 	public ventanaJuego() {
 		initialize(tamañoTablero);
 		tablero = new Matriz(tamañoTablero);
+		tablero.mezclarMatriz(1);
+		controlarVictoria();
 		renderizar();
 		movimientos = 0;
 	}
@@ -58,71 +63,86 @@ public class ventanaJuego {
 	 */
 	private void initialize(int tamañoTablero) {
 		frame = new JFrame();
+		frame.getContentPane().setBackground(Color.LIGHT_GRAY);
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		
-		JButton btnArriba = new JButton("New button");
+
+		btnArriba = new JButton("\u21E7");
 		btnArriba.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					tablero.moverIzquierda();
+					controlarVictoria();
 					movimientos++;
-					renderizar();					
+					renderizar();
 				} catch (Exception e) {
 				}
 			}
 		});
-		btnArriba.setBounds(314, 203, 45, 23);
+		btnArriba.setBounds(314, 189, 45, 30);
 		frame.getContentPane().add(btnArriba);
-		
-		JButton btnIzquierda = new JButton("New button");
+
+		btnIzquierda = new JButton("\u21E6");
 		btnIzquierda.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					tablero.moverArriba();
 					movimientos++;
-					renderizar();					
+					controlarVictoria();
+					renderizar();
 				} catch (Exception e2) {
 				}
 			}
 		});
-		btnIzquierda.setBounds(263, 227, 45, 23);
+		btnIzquierda.setBounds(263, 220, 50, 30);
 		frame.getContentPane().add(btnIzquierda);
-		
-		JButton btnAbajo = new JButton("New button");
+
+		btnAbajo = new JButton("\u21E9");
 		btnAbajo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					tablero.moverDerecha();
 					movimientos++;
-					renderizar();					
+					controlarVictoria();
+					renderizar();
 				} catch (Exception e2) {
 				}
 			}
 		});
-		btnAbajo.setBounds(314, 227, 45, 23);
+		btnAbajo.setBounds(314, 220, 45, 30);
 		frame.getContentPane().add(btnAbajo);
-		
-		JButton btnDerecha = new JButton("New button");
+
+		btnDerecha = new JButton("\u21E8");
 		btnDerecha.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					tablero.moverAbajo();
-					renderizar();
 					movimientos++;
+					controlarVictoria();
+					renderizar();
 				} catch (Exception e2) {
-					
+
 				}
 			}
 		});
-		btnDerecha.setBounds(369, 227, 45, 23);
+		btnDerecha.setBounds(361, 220, 50, 30);
 		frame.getContentPane().add(btnDerecha);
-		
+
 		tpPuntaje = new JTextPane();
+		tpPuntaje.setFont(new Font("Tahoma", Font.BOLD, 13));
+		tpPuntaje.setBackground(Color.LIGHT_GRAY);
 		tpPuntaje.setEditable(false);
 		tpPuntaje.setBounds(10, 227, 231, 20);
 		frame.getContentPane().add(tpPuntaje);
+
+		tpMensaje = new JTextPane();
+		tpMensaje.setBackground(Color.LIGHT_GRAY);
+		tpMensaje.setFont(new Font("Tahoma", Font.BOLD, 17));
+		tpMensaje.setBounds(263, 117, 148, 61);
+		tpMensaje.setEditable(false);
+		tpMensaje.setEnabled(false);
+		frame.getContentPane().add(tpMensaje);
 
 		controlCuadriculas = new JTextField[tamañoTablero][tamañoTablero];
 
@@ -132,9 +152,21 @@ public class ventanaJuego {
 				textField.setBounds(10 + (30 * i), 10 + (30 * t), 30, 30);
 				frame.getContentPane().add(textField);
 				textField.setColumns(2);
-				textField.setEditable(true);
+				textField.setEditable(false);
 				controlCuadriculas[i][t] = textField;
 			}
+		}
+	}
+
+	private void controlarVictoria() {
+		if (tablero.estaResuelto()) {
+			tpPuntaje.setVisible(false);
+			tpMensaje.setEnabled(true);
+			tpMensaje.setText("GANASTE!!! \n Puntaje: " + movimientos);
+			btnAbajo.setVisible(false);
+			btnArriba.setVisible(false);
+			btnIzquierda.setVisible(false);
+			btnDerecha.setVisible(false);
 		}
 	}
 
@@ -143,7 +175,7 @@ public class ventanaJuego {
 			for (int t = 0; t < tamañoTablero; t++) {
 				if (tablero.valorEnPosicion(i, t) != 0)
 					controlCuadriculas[t][i].setText(String.valueOf(tablero.valorEnPosicion(i, t)));
-				else 
+				else
 					controlCuadriculas[t][i].setText("");
 			}
 		}

@@ -71,19 +71,59 @@ public class Matriz {
 		else throw new AccessControlException("Movimiento invalido");
 	}
 
-	@Override
-	public String toString() {
-		String msj =  "";
+	public void mezclarMatriz(int cantidadMovimientos){
+		for (int i = 0; i < cantidadMovimientos; i++) {
+			Random rnd = new Random();
+			int movimiento = (int) (rnd.nextDouble() * 4 + 0);
+			switch (movimiento) {
+			case 0:
+				try {
+					moverArriba();
+				} catch (Exception e) {
+					if(i!=0)i--;
+				}
+				break;
+			case 1:
+				try {
+					moverAbajo();
+				} catch (Exception e) {
+					if(i!=0)i--;
+				}
+				break;
+			case 2:
+				try {
+					moverDerecha();
+				} catch (Exception e) {
+					if(i!=0)i--;
+				}
+				break;
+			case 3:			
+				try {
+					moverIzquierda();
+				} catch (Exception e) {
+					if(i!=0)i--;
+				}
+				break;
+
+			default:
+				break;
+			}
+		}
+	}
+	
+	public boolean estaResuelto(){
+		boolean ret = true;
+		int contador = 1;
 		for (int i = 0; i < tablero.length; i++) {
 			for (int j = 0; j < tablero.length; j++) {
-				msj = msj + tablero[i][j] + " ";
+				if (valorEnPosicion(i, j) != 0){
+					ret = ret && (valorEnPosicion(i, j) == contador);
+					contador++;
+				}
 			}
-			msj = msj + "\n";
 		}
-		return msj;
+		return ret;
 	}
-
-	
 }
 
 
