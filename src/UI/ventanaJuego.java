@@ -17,13 +17,14 @@ import java.awt.event.KeyEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JTextPane;
 
 import java.awt.Font;
 import java.awt.Color;
 
-public class ventanaJuego {
+public class VentanaJuego {
 
 	private JFrame frame;
 	private JTextField[][] controlCuadriculas;
@@ -38,26 +39,16 @@ public class ventanaJuego {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					cantMezclar = 1000;
-					tamañoTablero = 4;
-					ventanaJuego window = new ventanaJuego();
-					window.frame.setVisible(true);
-
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+	public void ejecutar() {
+		frame.setVisible(true);
 	}
 
 	/**
 	 * Create the application.
 	 */
-	public ventanaJuego() {
+	public VentanaJuego() {
+		cantMezclar = 1000;
+		tamañoTablero = 4;
 		initialize(tamañoTablero);
 		tablero = new Matriz(tamañoTablero);
 		tablero.mezclarMatriz(cantMezclar);
@@ -72,8 +63,8 @@ public class ventanaJuego {
 	private void initialize(int tamañoTablero) {
 		frame = new JFrame();
 		frame.getContentPane().setBackground(new Color(184, 134, 11));
-		frame.setBounds(100, 100, (40*tamañoTablero) + 220, (40*tamañoTablero) + 70);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setBounds(200, 200, (40*tamañoTablero) + 220, (40*tamañoTablero) + 70);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setResizable(false);
 		frame.getContentPane().setLayout(null);
 
