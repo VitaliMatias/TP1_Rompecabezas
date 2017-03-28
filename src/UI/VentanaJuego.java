@@ -22,6 +22,7 @@ public class VentanaJuego {
 	private Matriz tablero;
 	private int tamañoTablero;
 	private int movimientos;
+	private long tmpInicial;
 	private static int cantMezclar;
 	private JTextPane tpPuntaje;
 	private JTextPane tpMensaje;
@@ -42,6 +43,7 @@ public class VentanaJuego {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize(int posX, int posY) {
+		tmpInicial = System.currentTimeMillis();
 		frame = new JFrame();
 		frame.getContentPane().setBackground(new Color(184, 134, 11));
 		frame.setBounds(posX, posY, 440, 270);
@@ -177,6 +179,7 @@ public class VentanaJuego {
 		btnRepetir.setBounds(250, 168, 89, 23);
 		frame.getContentPane().add(btnRepetir);	
 		btnRepetir.setVisible(false);
+		
 	}
 	
 	private void crearCuadricula(int tamañoTablero){
@@ -232,4 +235,5 @@ public class VentanaJuego {
 		tpPuntaje.setText("Movimientos = " + movimientos);
 		controlarVictoria();
 	}
+
 }

@@ -47,6 +47,11 @@ public class MenuPrincipal {
 		frame.getContentPane().add(btnNuevoJuego);
 		
 		JButton btnClasificaciones = new JButton("Clasificaciones");
+		btnClasificaciones.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				VentanaClasificacion ventanaClasificacion = new VentanaClasificacion();
+			}
+		});
 		btnClasificaciones.setBounds(164, 87, 128, 23);
 		frame.getContentPane().add(btnClasificaciones);
 		
